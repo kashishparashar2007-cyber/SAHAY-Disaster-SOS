@@ -6,7 +6,7 @@ const SUPABASE_URL =
     "https://dnawvfoawtwyyuidcdwc.supabase.co";
 
 const SUPABASE_PUBLISHABLE_KEY =
-    "sb_publishable_Vf43EO9ubAQhLgQIftzknA_wKNDQ7KZ";
+    "YOUR_PUBLISHABLE_KEY";
 
 const supabaseClient = window.supabase.createClient(
     SUPABASE_URL,
@@ -44,8 +44,10 @@ async function sendSOS() {
     }
 
 
-    // Send SOS request to Supabase
-    const { error } = await supabaseClient
+    // Save SOS request in Supabase
+    // and get the actual database ID
+
+    const { data, error } = await supabaseClient
         .from("sos_requests")
         .insert([
             {
@@ -53,31 +55,51 @@ async function sendSOS() {
                 phone: phone,
                 message: message
             }
-        ]);
+        ])
+        .select("id")
+        .single();
 
 
-    // If error occurs
+    // If there is an error
+
     if (error) {
 
-        console.error("SOS ERROR:", error);
+        console.error(
+            "SOS ERROR:",
+            error
+        );
 
         alert(
             "❌ SOS submit nahi ho paya.\n\n" +
-            "Message: " + error.message + "\n\n" +
-            "Code: " + (error.code || "N/A")
+            "Message: " +
+            error.message +
+            "\n\n" +
+            "Code: " +
+            (error.code || "N/A")
         );
 
         return;
     }
 
 
-    // Success
+    // Create user-friendly SOS ID
+
+    const sosId =
+        "SOS-" + data.id;
+
+
+    // Show actual SOS ID
+
     alert(
         "🚨 SOS Request Sent!\n\n" +
         "Your emergency request has been registered successfully.\n\n" +
-        "Our response team can now process your request."
+        "Your SOS Request ID is:\n" +
+        sosId +
+        "\n\n" +
+        "Please save this ID to track your SOS status."
     );
 }
+
 
 
 // ==========================================
@@ -92,9 +114,12 @@ async function trackSOS() {
     const result =
         document.getElementById("sosStatus");
 
+
     const enteredId =
         input.value.trim();
 
+
+    // Check empty input
 
     if (!enteredId) {
 
@@ -106,17 +131,28 @@ async function trackSOS() {
     }
 
 
-    // Remove SOS- prefix
+    // Remove SOS- prefix if user enters SOS-5
+
     const id =
-        enteredId.replace(/^SOS-/i, "");
+        enteredId.replace(
+            /^SOS-/i,
+            ""
+        );
 
 
-    const { data, error } = await supabaseClient
-        .from("sos_requests")
-        .select("id, name, message, status, created_at")
-        .eq("id", id)
-        .single();
+    // Search SOS request
 
+    const { data, error } =
+        await supabaseClient
+            .from("sos_requests")
+            .select(
+                "id, name, message, status, created_at"
+            )
+            .eq("id", id)
+            .single();
+
+
+    // If request not found
 
     if (error) {
 
@@ -127,11 +163,9 @@ async function trackSOS() {
 
         result.innerHTML = `
             <div class="sos-result">
-
                 <p>
                     ❌ SOS Request not found.
                 </p>
-
             </div>
         `;
 
@@ -139,36 +173,51 @@ async function trackSOS() {
     }
 
 
+    // Show SOS status
+
     result.innerHTML = `
         <div class="sos-result">
 
-            <h3>🚨 SOS Request Found</h3>
+            <h3>
+                🚨 SOS Request Found
+            </h3>
 
             <p>
-                <strong>Request ID:</strong>
+                <strong>
+                    Request ID:
+                </strong>
                 SOS-${data.id}
             </p>
 
             <p>
-                <strong>Name:</strong>
+                <strong>
+                    Name:
+                </strong>
                 ${data.name}
             </p>
 
             <p>
-                <strong>Emergency:</strong>
+                <strong>
+                    Emergency:
+                </strong>
                 ${data.message}
             </p>
 
             <p>
-                <strong>Status:</strong>
-                ${data.status
-                    ? data.status.toUpperCase()
-                    : "PENDING"}
+                <strong>
+                    Status:
+                </strong>
+                ${
+                    data.status
+                        ? data.status.toUpperCase()
+                        : "PENDING"
+                }
             </p>
 
         </div>
     `;
 }
+
 
 
 // ==========================================
@@ -183,8 +232,8 @@ function selectHelp(type) {
 
     if (helpType) {
 
-        helpType.value = type;
-
+        helpType.value =
+            type;
     }
 
 
@@ -199,9 +248,9 @@ function selectHelp(type) {
         requestSection.scrollIntoView({
             behavior: "smooth"
         });
-
     }
 }
+
 
 
 // ==========================================
@@ -214,29 +263,34 @@ async function submitRequest(event) {
 
 
     const name =
-        document.getElementById("name")
+        document
+            .getElementById("name")
             .value
             .trim();
 
 
     const phone =
-        document.getElementById("phone")
+        document
+            .getElementById("phone")
             .value
             .trim();
 
 
     const type =
-        document.getElementById("helpType")
+        document
+            .getElementById("helpType")
             .value;
 
 
     const message =
-        document.getElementById("message")
+        document
+            .getElementById("message")
             .value
             .trim();
 
 
-    // Validation
+    // Check required fields
+
     if (
         !name ||
         !phone ||
@@ -252,7 +306,8 @@ async function submitRequest(event) {
     }
 
 
-    // Insert help request
+    // Insert help request into Supabase
+
     const { error } =
         await supabaseClient
             .from("help_requests")
@@ -266,7 +321,8 @@ async function submitRequest(event) {
             ]);
 
 
-    // Error
+    // Check error
+
     if (error) {
 
         console.error(
@@ -287,7 +343,8 @@ async function submitRequest(event) {
     }
 
 
-    // Temporary request ID
+    // Generate request ID for display
+
     const requestId =
         "REQ-" +
         Math.floor(
@@ -295,22 +352,47 @@ async function submitRequest(event) {
         );
 
 
+    // Success message
+
     alert(
         "✅ Help Request Submitted!\n\n" +
-        "Name: " + name + "\n" +
-        "Help Type: " + type + "\n" +
-        "Request ID: " + requestId
+        "Name: " +
+        name +
+        "\n" +
+        "Help Type: " +
+        type +
+        "\n" +
+        "Request ID: " +
+        requestId
     );
 
 
-    // Clear form
+    // Reset form
+
     event.target.reset();
 }
+
+
+
+
+
+    
+
+
+
+    
+
+
+
+        
+
 
     
         
 
 
+
+    
 
 
 
