@@ -7,7 +7,6 @@ const supabaseClient = window.supabase.createClient(
     SUPABASE_PUBLISHABLE_KEY
 );
 
-
 function sendSOS() {
     alert(
         "🚨 SOS Request Sent!\n\n" +
@@ -16,7 +15,6 @@ function sendSOS() {
     );
 }
 
-
 function selectHelp(type) {
     document.getElementById("helpType").value = type;
 
@@ -24,7 +22,6 @@ function selectHelp(type) {
         behavior: "smooth"
     });
 }
-
 
 async function submitRequest(event) {
     event.preventDefault();
