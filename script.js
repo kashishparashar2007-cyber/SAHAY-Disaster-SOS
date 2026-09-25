@@ -68,12 +68,11 @@ async function sendSOS() {
         return;
     }
 
-    // Use actual database ID
     const sosId = "SOS-" + data.id;
 
     alert(
         "🚨 SOS Request Sent!\n\n" +
-        "Your emergency request has been registered.\n" +
+        "Your emergency request has been registered.\n\n" +
         "Request ID: " + sosId
     );
 }
@@ -101,18 +100,14 @@ async function trackSOS() {
         return;
     }
 
-
-    // Remove SOS- prefix if user enters SOS-3
     const id =
         enteredId.replace(/^SOS-/i, "");
-
 
     const { data, error } = await supabaseClient
         .from("sos_requests")
         .select("id, name, message, status, created_at")
         .eq("id", id)
         .single();
-
 
     if (error) {
 
@@ -126,7 +121,6 @@ async function trackSOS() {
 
         return;
     }
-
 
     result.innerHTML = `
         <div class="sos-result">
@@ -175,9 +169,11 @@ function selectHelp(type) {
         document.querySelector(".request-section");
 
     if (requestSection) {
+
         requestSection.scrollIntoView({
             behavior: "smooth"
         });
+
     }
 }
 
@@ -255,19 +251,5 @@ async function submitRequest(event) {
 }
 
 
-
-
-
-
-
-
-
-
-    
-
-    
-                
-
-
-
+        
 
