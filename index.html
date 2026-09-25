@@ -1,31 +1,71 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
     <title>SAHAY – Disaster SOS</title>
+
     <link rel="stylesheet" href="style.css">
 </head>
 
 <body>
 
+    <!-- ================= HEADER ================= -->
+
     <header>
-        <div class="logo">SAHAY</div>
+
+        <div class="logo">
+            SAHAY
+        </div>
 
         <nav>
-            <a href="#home">Home</a>
-            <a href="#help">Get Help</a>
-            <a href="#resources">Resources</a>
-            <a href="#about">About</a>
+
+            <a href="#home">
+                Home
+            </a>
+
+            <a href="#help">
+                Get Help
+            </a>
+
+            <a href="#track">
+                Track SOS
+            </a>
+
+            <a href="#resources">
+                Resources
+            </a>
+
+            <a href="#about">
+                About
+            </a>
+
         </nav>
 
-        <button class="sos-btn" onclick="sendSOS()">🚨 SOS</button>
+        <button
+            class="sos-btn"
+            onclick="sendSOS()"
+        >
+            🚨 SOS
+        </button>
+
     </header>
 
 
-    <section class="hero" id="home">
+    <!-- ================= HERO ================= -->
+
+    <section
+        class="hero"
+        id="home"
+    >
+
         <div class="hero-content">
-            <h1>Help When It Matters Most.</h1>
+
+            <h1>
+                Help When It Matters Most.
+            </h1>
 
             <p>
                 SAHAY connects victims, volunteers, hospitals,
@@ -33,73 +73,182 @@
             </p>
 
             <div class="hero-buttons">
-                <button onclick="sendSOS()" class="primary-btn">
+
+                <button
+                    onclick="sendSOS()"
+                    class="primary-btn"
+                >
                     🚨 Send SOS
                 </button>
 
-                <a href="#help" class="secondary-btn">
+                <a
+                    href="#help"
+                    class="secondary-btn"
+                >
                     Get Help
                 </a>
+
             </div>
+
         </div>
+
     </section>
 
 
-    <section class="help-section" id="help">
+    <!-- ================= HELP SECTION ================= -->
 
-        <h2>What Do You Need?</h2>
+    <section
+        class="help-section"
+        id="help"
+    >
+
+        <h2>
+            What Do You Need?
+        </h2>
 
         <p class="section-text">
             Select the type of help you need.
         </p>
 
+
         <div class="help-grid">
 
-            <div class="help-card" onclick="selectHelp('Rescue')">
-                <div class="icon">🚑</div>
-                <h3>Rescue</h3>
-                <p>Request emergency rescue assistance.</p>
+            <div
+                class="help-card"
+                onclick="selectHelp('Rescue')"
+            >
+
+                <div class="icon">
+                    🚑
+                </div>
+
+                <h3>
+                    Rescue
+                </h3>
+
+                <p>
+                    Request emergency rescue assistance.
+                </p>
+
             </div>
 
-            <div class="help-card" onclick="selectHelp('Medical')">
-                <div class="icon">🏥</div>
-                <h3>Medical</h3>
-                <p>Find medical assistance and hospitals.</p>
+
+            <div
+                class="help-card"
+                onclick="selectHelp('Medical')"
+            >
+
+                <div class="icon">
+                    🏥
+                </div>
+
+                <h3>
+                    Medical
+                </h3>
+
+                <p>
+                    Find medical assistance and hospitals.
+                </p>
+
             </div>
 
-            <div class="help-card" onclick="selectHelp('Food')">
-                <div class="icon">🍱</div>
-                <h3>Food</h3>
-                <p>Request food and essential supplies.</p>
+
+            <div
+                class="help-card"
+                onclick="selectHelp('Food')"
+            >
+
+                <div class="icon">
+                    🍱
+                </div>
+
+                <h3>
+                    Food
+                </h3>
+
+                <p>
+                    Request food and essential supplies.
+                </p>
+
             </div>
 
-            <div class="help-card" onclick="selectHelp('Water')">
-                <div class="icon">💧</div>
-                <h3>Water</h3>
-                <p>Request safe drinking water.</p>
+
+            <div
+                class="help-card"
+                onclick="selectHelp('Water')"
+            >
+
+                <div class="icon">
+                    💧
+                </div>
+
+                <h3>
+                    Water
+                </h3>
+
+                <p>
+                    Request safe drinking water.
+                </p>
+
             </div>
 
-            <div class="help-card" onclick="selectHelp('Shelter')">
-                <div class="icon">🏠</div>
-                <h3>Shelter</h3>
-                <p>Find temporary shelter nearby.</p>
+
+            <div
+                class="help-card"
+                onclick="selectHelp('Shelter')"
+            >
+
+                <div class="icon">
+                    🏠
+                </div>
+
+                <h3>
+                    Shelter
+                </h3>
+
+                <p>
+                    Find temporary shelter nearby.
+                </p>
+
             </div>
 
-            <div class="help-card" onclick="selectHelp('Medicine')">
-                <div class="icon">💊</div>
-                <h3>Medicine</h3>
-                <p>Request essential medicines.</p>
+
+            <div
+                class="help-card"
+                onclick="selectHelp('Medicine')"
+            >
+
+                <div class="icon">
+                    💊
+                </div>
+
+                <h3>
+                    Medicine
+                </h3>
+
+                <p>
+                    Request essential medicines.
+                </p>
+
             </div>
 
         </div>
+
     </section>
 
 
+    <!-- ================= HELP REQUEST FORM ================= -->
+
     <section class="request-section">
 
-        <h2>Submit a Help Request</h2>
+        <h2>
+            Submit a Help Request
+        </h2>
 
-        <form onsubmit="submitRequest(event)">
+
+        <form
+            onsubmit="submitRequest(event)"
+        >
 
             <input
                 type="text"
@@ -108,6 +257,7 @@
                 required
             >
 
+
             <input
                 type="tel"
                 id="phone"
@@ -115,15 +265,42 @@
                 required
             >
 
-            <select id="helpType" required>
-                <option value="">Select Help Type</option>
-                <option>Rescue</option>
-                <option>Medical</option>
-                <option>Food</option>
-                <option>Water</option>
-                <option>Shelter</option>
-                <option>Medicine</option>
+
+            <select
+                id="helpType"
+                required
+            >
+
+                <option value="">
+                    Select Help Type
+                </option>
+
+                <option>
+                    Rescue
+                </option>
+
+                <option>
+                    Medical
+                </option>
+
+                <option>
+                    Food
+                </option>
+
+                <option>
+                    Water
+                </option>
+
+                <option>
+                    Shelter
+                </option>
+
+                <option>
+                    Medicine
+                </option>
+
             </select>
+
 
             <textarea
                 id="message"
@@ -131,7 +308,11 @@
                 required
             ></textarea>
 
-            <button type="submit" class="primary-btn">
+
+            <button
+                type="submit"
+                class="primary-btn"
+            >
                 Submit Request
             </button>
 
@@ -140,34 +321,125 @@
     </section>
 
 
-    <section class="resources" id="resources">
+    <!-- ================= TRACK SOS ================= -->
 
-        <h2>Available Resources</h2>
+    <section
+        class="track-section"
+        id="track"
+    >
+
+        <h2>
+            Track Your SOS
+        </h2>
+
+        <p class="section-text">
+            Enter your SOS Request ID to check its current status.
+        </p>
+
+
+        <div class="track-box">
+
+            <input
+                type="text"
+                id="sosIdInput"
+                placeholder="Enter SOS ID"
+            >
+
+
+            <button
+                class="primary-btn"
+                onclick="trackSOS()"
+            >
+                Track SOS
+            </button>
+
+        </div>
+
+
+        <div id="sosStatus"></div>
+
+    </section>
+
+
+    <!-- ================= RESOURCES ================= -->
+
+    <section
+        class="resources"
+        id="resources"
+    >
+
+        <h2>
+            Available Resources
+        </h2>
+
 
         <div class="resource-grid">
 
             <div class="resource-card">
-                <h3>🍱 Food</h3>
-                <p>Relief food packages</p>
-                <strong>Available</strong>
+
+                <h3>
+                    🍱 Food
+                </h3>
+
+                <p>
+                    Relief food packages
+                </p>
+
+                <strong>
+                    Available
+                </strong>
+
             </div>
 
-            <div class="resource-card">
-                <h3>💧 Water</h3>
-                <p>Drinking water supplies</p>
-                <strong>Available</strong>
-            </div>
 
             <div class="resource-card">
-                <h3>🏥 Medical</h3>
-                <p>Emergency medical support</p>
-                <strong>Available</strong>
+
+                <h3>
+                    💧 Water
+                </h3>
+
+                <p>
+                    Drinking water supplies
+                </p>
+
+                <strong>
+                    Available
+                </strong>
+
             </div>
 
+
             <div class="resource-card">
-                <h3>🏠 Shelter</h3>
-                <p>Temporary accommodation</p>
-                <strong>Available</strong>
+
+                <h3>
+                    🏥 Medical
+                </h3>
+
+                <p>
+                    Emergency medical support
+                </p>
+
+                <strong>
+                    Available
+                </strong>
+
+            </div>
+
+
+            <div class="resource-card">
+
+                <h3>
+                    🏠 Shelter
+                </h3>
+
+                <p>
+                    Temporary accommodation
+                </p>
+
+                <strong>
+                    Available
+                </strong>
+
             </div>
 
         </div>
@@ -175,9 +447,17 @@
     </section>
 
 
-    <section class="about" id="about">
+    <!-- ================= ABOUT ================= -->
 
-        <h2>About SAHAY</h2>
+    <section
+        class="about"
+        id="about"
+    >
+
+        <h2>
+            About SAHAY
+        </h2>
+
 
         <p>
             SAHAY is a non-AI disaster response and recovery
@@ -185,26 +465,77 @@
             emergencies.
         </p>
 
+
         <div class="journey">
 
-            <div>🚨<br><strong>Emergency</strong></div>
-            <div>🚑<br><strong>Rescue</strong></div>
-            <div>🍱<br><strong>Relief</strong></div>
-            <div>🏗️<br><strong>Recovery</strong></div>
+            <div>
+                🚨
+                <br>
+                <strong>
+                    Emergency
+                </strong>
+            </div>
+
+
+            <div>
+                🚑
+                <br>
+                <strong>
+                    Rescue
+                </strong>
+            </div>
+
+
+            <div>
+                🍱
+                <br>
+                <strong>
+                    Relief
+                </strong>
+            </div>
+
+
+            <div>
+                🏗️
+                <br>
+                <strong>
+                    Recovery
+                </strong>
+            </div>
 
         </div>
 
     </section>
 
 
+    <!-- ================= FOOTER ================= -->
+
     <footer>
-        <p>© 2026 SAHAY – Disaster SOS</p>
-        <p>Connecting people. Coordinating help. Saving time.</p>
+
+        <p>
+            © 2026 SAHAY – Disaster SOS
+        </p>
+
+        <p>
+            Connecting people. Coordinating help. Saving time.
+        </p>
+
     </footer>
 
 
+    <!-- ================= SCRIPTS ================= -->
+
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-<script src="script.js"></script>
+
+    <script src="script.js"></script>
 
 </body>
+
 </html>
+
+
+
+        
+
+            
+
