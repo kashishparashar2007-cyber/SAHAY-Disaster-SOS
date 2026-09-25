@@ -1,10 +1,10 @@
-// ================================
+// ==========================================
 // SAHAY - Supabase Connection
-// ================================
+// ==========================================
 
 const SUPABASE_URL = "https://dnawvfoawtywyuidcdwc.supabase.co";
 
-const SUPABASE_PUBLISHABLE_KEY = "sb_publishable_Vf43EO9ubAQhLgQIftzknA_wKNDQ7KZ";
+const SUPABASE_PUBLISHABLE_KEY = "YOUR_PUBLISHABLE_KEY";
 
 const supabaseClient = window.supabase.createClient(
     SUPABASE_URL,
@@ -12,9 +12,9 @@ const supabaseClient = window.supabase.createClient(
 );
 
 
-// ================================
+// ==========================================
 // SOS BUTTON
-// ================================
+// ==========================================
 
 function sendSOS() {
 
@@ -28,9 +28,9 @@ function sendSOS() {
 }
 
 
-// ================================
+// ==========================================
 // HELP CARD SELECTION
-// ================================
+// ==========================================
 
 function selectHelp(type) {
 
@@ -40,7 +40,8 @@ function selectHelp(type) {
         helpType.value = type;
     }
 
-    const requestSection = document.querySelector(".request-section");
+    const requestSection =
+        document.querySelector(".request-section");
 
     if (requestSection) {
         requestSection.scrollIntoView({
@@ -50,30 +51,45 @@ function selectHelp(type) {
 }
 
 
-// ================================
+// ==========================================
 // SUBMIT HELP REQUEST
-// ================================
+// ==========================================
 
 async function submitRequest(event) {
 
     event.preventDefault();
 
-    const name = document.getElementById("name").value.trim();
-    const phone = document.getElementById("phone").value.trim();
-    const type = document.getElementById("helpType").value;
-    const message = document.getElementById("message").value.trim();
+    const name =
+        document.getElementById("name").value.trim();
+
+    const phone =
+        document.getElementById("phone").value.trim();
+
+    const type =
+        document.getElementById("helpType").value;
+
+    const message =
+        document.getElementById("message").value.trim();
 
 
+    // -------------------------------
     // Basic validation
+    // -------------------------------
+
     if (!name || !phone || !type || !message) {
 
-        alert("⚠️ Please fill all the required fields.");
+        alert(
+            "⚠️ Please fill all the required fields."
+        );
 
         return;
     }
 
 
-    // Send request to Supabase
+    // -------------------------------
+    // Send data to Supabase
+    // -------------------------------
+
     const { error } = await supabaseClient
         .from("help_requests")
         .insert([
@@ -86,26 +102,31 @@ async function submitRequest(event) {
         ]);
 
 
-    // If database gives an error
+    // -------------------------------
+    // Show EXACT Supabase error
+    // -------------------------------
+
     if (error) {
 
-        console.error("Supabase Error:", error);
+        console.error("SUPABASE ERROR:", error);
 
         alert(
-            "❌ Request submit nahi ho payi.\n\n" +
-            "Please try again."
+            "❌ SUPABASE ERROR\n\n" +
+            "Message: " + error.message + "\n\n" +
+            "Code: " + error.code
         );
 
         return;
     }
 
 
-    // Generate request ID
+    // -------------------------------
+    // Success
+    // -------------------------------
+
     const requestId =
         "REQ-" + Math.floor(Math.random() * 90000 + 10000);
 
-
-    // Success message
     alert(
         "✅ Help Request Submitted!\n\n" +
         "Name: " + name + "\n" +
@@ -114,6 +135,12 @@ async function submitRequest(event) {
     );
 
 
-    // Clear form
+    // -------------------------------
+    // Reset form
+    // -------------------------------
+
     event.target.reset();
 }
+
+
+
