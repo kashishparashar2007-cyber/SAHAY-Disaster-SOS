@@ -43,7 +43,9 @@ async function sendSOS() {
         return;
     }
 
-    const { data, error } = await supabaseClient
+
+    // Send SOS request to Supabase
+    const { error } = await supabaseClient
         .from("sos_requests")
         .insert([
             {
@@ -51,10 +53,10 @@ async function sendSOS() {
                 phone: phone,
                 message: message
             }
-        ])
-        .select()
-        .single();
+        ]);
 
+
+    // If error occurs
     if (error) {
 
         console.error("SOS ERROR:", error);
@@ -68,12 +70,12 @@ async function sendSOS() {
         return;
     }
 
-    const sosId = "SOS-" + data.id;
 
+    // Success
     alert(
         "🚨 SOS Request Sent!\n\n" +
-        "Your emergency request has been registered.\n\n" +
-        "Request ID: " + sosId
+        "Your emergency request has been registered successfully.\n\n" +
+        "Our response team can now process your request."
     );
 }
 
@@ -93,15 +95,21 @@ async function trackSOS() {
     const enteredId =
         input.value.trim();
 
+
     if (!enteredId) {
 
-        alert("⚠️ Please enter your SOS Request ID.");
+        alert(
+            "⚠️ Please enter your SOS Request ID."
+        );
 
         return;
     }
 
+
+    // Remove SOS- prefix
     const id =
         enteredId.replace(/^SOS-/i, "");
+
 
     const { data, error } = await supabaseClient
         .from("sos_requests")
@@ -109,18 +117,27 @@ async function trackSOS() {
         .eq("id", id)
         .single();
 
+
     if (error) {
 
-        console.error("TRACK SOS ERROR:", error);
+        console.error(
+            "TRACK SOS ERROR:",
+            error
+        );
 
         result.innerHTML = `
-            <p>
-                ❌ SOS Request not found.
-            </p>
+            <div class="sos-result">
+
+                <p>
+                    ❌ SOS Request not found.
+                </p>
+
+            </div>
         `;
 
         return;
     }
+
 
     result.innerHTML = `
         <div class="sos-result">
@@ -144,7 +161,9 @@ async function trackSOS() {
 
             <p>
                 <strong>Status:</strong>
-                ${data.status.toUpperCase()}
+                ${data.status
+                    ? data.status.toUpperCase()
+                    : "PENDING"}
             </p>
 
         </div>
@@ -161,12 +180,19 @@ function selectHelp(type) {
     const helpType =
         document.getElementById("helpType");
 
+
     if (helpType) {
+
         helpType.value = type;
+
     }
 
+
     const requestSection =
-        document.querySelector(".request-section");
+        document.querySelector(
+            ".request-section"
+        );
+
 
     if (requestSection) {
 
@@ -186,20 +212,37 @@ async function submitRequest(event) {
 
     event.preventDefault();
 
+
     const name =
-        document.getElementById("name").value.trim();
+        document.getElementById("name")
+            .value
+            .trim();
+
 
     const phone =
-        document.getElementById("phone").value.trim();
+        document.getElementById("phone")
+            .value
+            .trim();
+
 
     const type =
-        document.getElementById("helpType").value;
+        document.getElementById("helpType")
+            .value;
+
 
     const message =
-        document.getElementById("message").value.trim();
+        document.getElementById("message")
+            .value
+            .trim();
 
 
-    if (!name || !phone || !type || !message) {
+    // Validation
+    if (
+        !name ||
+        !phone ||
+        !type ||
+        !message
+    ) {
 
         alert(
             "⚠️ Please fill all the required fields."
@@ -209,34 +252,47 @@ async function submitRequest(event) {
     }
 
 
-    const { error } = await supabaseClient
-        .from("help_requests")
-        .insert([
-            {
-                name: name,
-                phone: phone,
-                help_type: type,
-                message: message
-            }
-        ]);
+    // Insert help request
+    const { error } =
+        await supabaseClient
+            .from("help_requests")
+            .insert([
+                {
+                    name: name,
+                    phone: phone,
+                    help_type: type,
+                    message: message
+                }
+            ]);
 
 
+    // Error
     if (error) {
 
-        console.error("SUPABASE ERROR:", error);
+        console.error(
+            "SUPABASE ERROR:",
+            error
+        );
 
         alert(
             "❌ SUPABASE ERROR\n\n" +
-            "Message: " + error.message + "\n\n" +
-            "Code: " + (error.code || "N/A")
+            "Message: " +
+            error.message +
+            "\n\n" +
+            "Code: " +
+            (error.code || "N/A")
         );
 
         return;
     }
 
 
+    // Temporary request ID
     const requestId =
-        "REQ-" + Math.floor(Math.random() * 90000 + 10000);
+        "REQ-" +
+        Math.floor(
+            Math.random() * 90000 + 10000
+        );
 
 
     alert(
@@ -247,9 +303,22 @@ async function submitRequest(event) {
     );
 
 
+    // Clear form
     event.target.reset();
 }
 
-
+    
         
 
+
+
+
+
+    
+
+
+
+
+
+
+    
