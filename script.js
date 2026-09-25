@@ -2,9 +2,11 @@
 // SAHAY - Supabase Connection
 // ==========================================
 
-const SUPABASE_URL = "https://dnawvfoawtywyuidcdwc.supabase.co";
+const SUPABASE_URL =
+    "https://dnawvfoawtwyyuidcdwc.supabase.co";
 
-const SUPABASE_PUBLISHABLE_KEY = "sb_publishable_Vf43EO9ubAQhLgQIftzknA_wKNDQ7KZ";
+const SUPABASE_PUBLISHABLE_KEY =
+    "YOUR_PUBLISHABLE_KEY";
 
 const supabaseClient = window.supabase.createClient(
     SUPABASE_URL,
@@ -18,7 +20,8 @@ const supabaseClient = window.supabase.createClient(
 
 function sendSOS() {
 
-    const sosId = "SOS-" + Math.floor(Math.random() * 90000 + 10000);
+    const sosId =
+        "SOS-" + Math.floor(Math.random() * 90000 + 10000);
 
     alert(
         "🚨 SOS Request Sent!\n\n" +
@@ -34,7 +37,8 @@ function sendSOS() {
 
 function selectHelp(type) {
 
-    const helpType = document.getElementById("helpType");
+    const helpType =
+        document.getElementById("helpType");
 
     if (helpType) {
         helpType.value = type;
@@ -72,10 +76,7 @@ async function submitRequest(event) {
         document.getElementById("message").value.trim();
 
 
-    // -------------------------------
-    // Basic validation
-    // -------------------------------
-
+    // Check required fields
     if (!name || !phone || !type || !message) {
 
         alert(
@@ -86,10 +87,7 @@ async function submitRequest(event) {
     }
 
 
-    // -------------------------------
-    // Send data to Supabase
-    // -------------------------------
-
+    // Send request to Supabase
     const { error } = await supabaseClient
         .from("help_requests")
         .insert([
@@ -102,10 +100,7 @@ async function submitRequest(event) {
         ]);
 
 
-    // -------------------------------
-    // Show EXACT Supabase error
-    // -------------------------------
-
+    // Show exact database error
     if (error) {
 
         console.error("SUPABASE ERROR:", error);
@@ -113,20 +108,19 @@ async function submitRequest(event) {
         alert(
             "❌ SUPABASE ERROR\n\n" +
             "Message: " + error.message + "\n\n" +
-            "Code: " + error.code
+            "Code: " + (error.code || "N/A")
         );
 
         return;
     }
 
 
-    // -------------------------------
-    // Success
-    // -------------------------------
-
+    // Generate request ID
     const requestId =
         "REQ-" + Math.floor(Math.random() * 90000 + 10000);
 
+
+    // Success
     alert(
         "✅ Help Request Submitted!\n\n" +
         "Name: " + name + "\n" +
@@ -135,12 +129,14 @@ async function submitRequest(event) {
     );
 
 
-    // -------------------------------
     // Reset form
-    // -------------------------------
-
     event.target.reset();
 }
+
+
+    
+                
+
 
 
 
