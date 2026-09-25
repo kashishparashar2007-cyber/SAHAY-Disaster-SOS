@@ -6,7 +6,7 @@ const SUPABASE_URL =
     "https://dnawvfoawtwyyuidcdwc.supabase.co";
 
 const SUPABASE_PUBLISHABLE_KEY =
-    "sb_publishable_Vf43EO9ubAQhLgQIftzknA_wKNDQ7KZ";
+    "YOUR_PUBLISHABLE_KEY";
 
 const supabaseClient = window.supabase.createClient(
     SUPABASE_URL,
@@ -43,9 +43,7 @@ async function sendSOS() {
         return;
     }
 
-
-    // Save SOS request to Supabase
-    const { error } = await supabaseClient
+    const { data, error } = await supabaseClient
         .from("sos_requests")
         .insert([
             {
@@ -53,10 +51,10 @@ async function sendSOS() {
                 phone: phone,
                 message: message
             }
-        ]);
+        ])
+        .select()
+        .single();
 
-
-    // Show database error
     if (error) {
 
         console.error("SOS ERROR:", error);
@@ -70,18 +68,93 @@ async function sendSOS() {
         return;
     }
 
+    // Use actual database ID
+    const sosId = "SOS-" + data.id;
 
-    // Generate SOS ID
-    const sosId =
-        "SOS-" + Math.floor(Math.random() * 90000 + 10000);
-
-
-    // Success message
     alert(
         "🚨 SOS Request Sent!\n\n" +
         "Your emergency request has been registered.\n" +
         "Request ID: " + sosId
     );
+}
+
+
+// ==========================================
+// TRACK SOS
+// ==========================================
+
+async function trackSOS() {
+
+    const input =
+        document.getElementById("sosIdInput");
+
+    const result =
+        document.getElementById("sosStatus");
+
+    const enteredId =
+        input.value.trim();
+
+    if (!enteredId) {
+
+        alert("⚠️ Please enter your SOS Request ID.");
+
+        return;
+    }
+
+
+    // Remove SOS- prefix if user enters SOS-3
+    const id =
+        enteredId.replace(/^SOS-/i, "");
+
+
+    const { data, error } = await supabaseClient
+        .from("sos_requests")
+        .select("id, name, message, status, created_at")
+        .eq("id", id)
+        .single();
+
+
+    if (error) {
+
+        console.error("TRACK SOS ERROR:", error);
+
+        result.innerHTML = `
+            <p>
+                ❌ SOS Request not found.
+            </p>
+        `;
+
+        return;
+    }
+
+
+    result.innerHTML = `
+        <div class="sos-result">
+
+            <h3>🚨 SOS Request Found</h3>
+
+            <p>
+                <strong>Request ID:</strong>
+                SOS-${data.id}
+            </p>
+
+            <p>
+                <strong>Name:</strong>
+                ${data.name}
+            </p>
+
+            <p>
+                <strong>Emergency:</strong>
+                ${data.message}
+            </p>
+
+            <p>
+                <strong>Status:</strong>
+                ${data.status.toUpperCase()}
+            </p>
+
+        </div>
+    `;
 }
 
 
@@ -130,7 +203,6 @@ async function submitRequest(event) {
         document.getElementById("message").value.trim();
 
 
-    // Check required fields
     if (!name || !phone || !type || !message) {
 
         alert(
@@ -141,7 +213,6 @@ async function submitRequest(event) {
     }
 
 
-    // Save help request to Supabase
     const { error } = await supabaseClient
         .from("help_requests")
         .insert([
@@ -154,7 +225,6 @@ async function submitRequest(event) {
         ]);
 
 
-    // Show database error
     if (error) {
 
         console.error("SUPABASE ERROR:", error);
@@ -169,12 +239,10 @@ async function submitRequest(event) {
     }
 
 
-    // Generate request ID
     const requestId =
         "REQ-" + Math.floor(Math.random() * 90000 + 10000);
 
 
-    // Success
     alert(
         "✅ Help Request Submitted!\n\n" +
         "Name: " + name + "\n" +
@@ -183,11 +251,16 @@ async function submitRequest(event) {
     );
 
 
-    // Reset form
     event.target.reset();
 }
 
-        
+
+
+
+
+
+
+
 
 
     
