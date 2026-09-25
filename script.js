@@ -18,11 +18,65 @@ const supabaseClient = window.supabase.createClient(
 // SOS BUTTON
 // ==========================================
 
-function sendSOS() {
+async function sendSOS() {
 
+    const name = prompt("Enter your name:");
+
+    if (!name) {
+        alert("⚠️ Please enter your name.");
+        return;
+    }
+
+    const phone = prompt("Enter your phone number:");
+
+    if (!phone) {
+        alert("⚠️ Please enter your phone number.");
+        return;
+    }
+
+    const message = prompt(
+        "What emergency help do you need?"
+    );
+
+    if (!message) {
+        alert("⚠️ Please describe your emergency.");
+        return;
+    }
+
+
+    // Save SOS request to Supabase
+    const { error } = await supabaseClient
+        .from("sos_requests")
+        .insert([
+            {
+                name: name,
+                phone: phone,
+                message: message
+            }
+        ]);
+
+
+    // Show database error
+    if (error) {
+
+        console.error("SOS ERROR:", error);
+
+        alert(
+            "❌ SOS submit nahi ho paya.\n\n" +
+            "Message: " + error.message + "\n\n" +
+            "Code: " + (error.code || "N/A")
+        );
+
+        return;
+    }
+
+
+    // Generate SOS ID
     const sosId =
         "SOS-" + Math.floor(Math.random() * 90000 + 10000);
 
+
+    // Success message
     alert(
         "🚨 SOS Request Sent!\n\n" +
         "Your emergency request has been registered.\n" +
@@ -87,7 +141,7 @@ async function submitRequest(event) {
     }
 
 
-    // Send request to Supabase
+    // Save help request to Supabase
     const { error } = await supabaseClient
         .from("help_requests")
         .insert([
@@ -100,7 +154,7 @@ async function submitRequest(event) {
         ]);
 
 
-    // Show exact database error
+    // Show database error
     if (error) {
 
         console.error("SUPABASE ERROR:", error);
@@ -133,6 +187,10 @@ async function submitRequest(event) {
     event.target.reset();
 }
 
+        
+
+
+    
 
     
                 
